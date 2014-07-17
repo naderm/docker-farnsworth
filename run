@@ -5,7 +5,7 @@ cat <<EOF
 NameVirtualHost *:80
 
 <VirtualHost *:80>
-     ServerAdmin kngnm@bsc.coop
+     ServerAdmin ${HOUSE_ABBREV}nm@bsc.coop
      ServerName ${HOSTNAME}
      ServerAlias www.${HOSTNAME}
      # DocumentRoot /var/www/html/
@@ -42,11 +42,11 @@ EOF > /etc/httpd/conf.d/vhost.conf
 
 cd /var/www/farnsworth
 
-su - apache -c "cat" <<EOF
+su - apache -c cat <<EOF
 SECRET_KEY = "$(openssl rand -base64 50)"
-HOUSE_NAME = "Kingman Hall"
-SHORT_HOUSE_NAME = "Kingman"
-HOUSE_ABBREV = "kng"
+HOUSE_NAME = "${HOUSE_NAME}"
+SHORT_HOUSE_NAME = "${SHORT_HOUSE_NAME}"
+HOUSE_ABBREV = "${HOUSE_ABBREV}"
 SITE_DOMAIN = "${HOSTNAME}"
 POSTGRES_PASSWORD = "${POSTGRESQL_PASS}"
 EOF > farnsworth/house_settings.py
@@ -54,6 +54,6 @@ EOF > farnsworth/house_settings.py
 su - apache -c "./manage.py syncdb"
 su - apache -c "./manage.py collectstatic"
 su - apache -c "./manage.py test"
-#./manage.py migrate
+#su - apache -c "./manage.py migrate"
 
 /usr/sbin/apache2ctl -D FOREGROUND
