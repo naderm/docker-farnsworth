@@ -2,7 +2,7 @@ FROM centos
 MAINTAINER Nader Morshed <morshed.nader@gmail.com>
 
 RUN yum -y update
-RUN yum install -y httpd postgresql python python-devel gcc mod_wsgi mercurial git libffi-devel curl postgresql-devel
+RUN yum install -y httpd postgresql python python-devel gcc mod_wsgi mercurial git libffi-devel curl postgresql-devel openssl
 RUN curl https://bootstrap.pypa.io/get-pip.py | python
 
 # Clone Farnsworth
