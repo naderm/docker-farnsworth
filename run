@@ -51,10 +51,6 @@ SITE_DOMAIN = "${HOSTNAME}"
 POSTGRES_PASSWORD = "${POSTGRESQL_PASS}"
 EOF
 
-host db
-cat farnsworth/house_settings.py
-cat farnsworth/local_settings.py
-
 ./manage.py collectstatic --noinput
 ./manage.py syncdb --noinput
 ./manage.py test
