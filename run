@@ -56,4 +56,4 @@ su - apache -c "./manage.py collectstatic"
 su - apache -c "./manage.py test"
 #su - apache -c "./manage.py migrate"
 
-/usr/sbin/apachectl -D FOREGROUND
+/usr/sbin/apache2 -D FOREGROUND
