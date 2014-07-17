@@ -10,6 +10,7 @@ RUN git clone -b kingman https://github.com/knagra/farnsworth.git /var/www/farns
 RUN pip install -r /var/www/farnsworth/requirements.txt
 RUN chown -R apache:apache /var/www/farnsworth
 
+ADD wsgi.conf /etc/httpd/conf.d/wsgi.conf
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 

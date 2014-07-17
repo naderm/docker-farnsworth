@@ -19,7 +19,7 @@ NameVirtualHost *:443
 WSGISocketPrefix run/wsgi
 
 <VirtualHost *:443>
-     ServerAdmin kngnm@bsc.coop
+     ServerAdmin ${HOUSE_ABBREV}nm@bsc.coop
      ServerName ${HOSTNAME}
      ServerAlias www.${HOSTNAME}
      # DocumentRoot /var/www/html/
