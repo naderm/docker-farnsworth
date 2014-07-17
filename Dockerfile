@@ -2,7 +2,7 @@ FROM centos
 MAINTAINER Nader Morshed <morshed.nader@gmail.com>
 
 RUN yum -y update
-RUN yum install -y httpd postgresql python python-devel python-virtualenv gcc mod_wsgi mercurial git libffi-devel
+RUN yum install -y httpd postgresql python python-devel python-pip gcc mod_wsgi mercurial git libffi-devel
 
 # Clone Farnsworth
 RUN git clone -b kingman https://github.com/knagra/farnsworth.git /var/www/farnsworth
