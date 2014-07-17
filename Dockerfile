@@ -7,7 +7,7 @@ RUN curl https://bootstrap.pypa.io/get-pip.py | python
 
 # Clone Farnsworth
 RUN git clone -b kingman https://github.com/knagra/farnsworth.git /var/www/farnsworth
-RUN pip install -r /var/www/farnsworth/bin/activate/requirements.txt
+RUN pip install -r /var/www/farnsworth/requirements.txt
 RUN chown -R apache:apache /var/www/farnsworth
 
 ADD run /usr/local/bin/run
