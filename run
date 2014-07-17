@@ -42,8 +42,8 @@ EOF
 
 cd /var/www/farnsworth
 
-su - apache -c cat > farnsworth/house_settings.py <<EOF
-SECRET_KEY = "$(openssl rand -base64 50)"
+cat > farnsworth/house_settings.py <<EOF
+SECRET_KEY = "$(openssl rand -base64 48)"
 HOUSE_NAME = "${HOUSE_NAME}"
 SHORT_HOUSE_NAME = "${SHORT_HOUSE_NAME}"
 HOUSE_ABBREV = "${HOUSE_ABBREV}"
@@ -51,9 +51,17 @@ SITE_DOMAIN = "${HOSTNAME}"
 POSTGRES_PASSWORD = "${POSTGRESQL_PASS}"
 EOF
 
-su - apache -c "./manage.py syncdb"
-su - apache -c "./manage.py collectstatic"
-su - apache -c "./manage.py test"
-#su - apache -c "./manage.py migrate"
+host db
+cat farnsworth/house_settings.py
+cat farnsworth/local_settings.py
+
+./manage.py collectstatic --noinput
+./manage.py syncdb --noinput
+./manage.py test
+#./manage.py migrate
+
+farnworth/pre_fill.py
+
+chown -R apache:apache .
 
 /usr/sbin/apache2 -D FOREGROUND
