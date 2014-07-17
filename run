@@ -16,7 +16,6 @@ NameVirtualHost *:80
 
 NameVirtualHost *:443
 
-#WSGIPythonPath /var/www/farnsworth/lib/python2.7/site-packages
 WSGISocketPrefix run/wsgi
 
 <VirtualHost *:443>
@@ -27,8 +26,8 @@ WSGISocketPrefix run/wsgi
      ErrorLog logs/error_log
      CustomLog logs/access_log combined
 
-     WSGIDaemonProcess kingmanhall.org python-path=/var/www/farnsworth/lib/python2.7/site-packages
-     WSGIProcessGroup kingmanhall.org
+     WSGIDaemonProcess ${HOSTNAME}
+     WSGIProcessGroup ${HOSTNAME}
 
      WSGIScriptAlias / /var/www/farnsworth/farnsworth/wsgi.py
 
