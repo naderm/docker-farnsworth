@@ -56,8 +56,8 @@ EOF
 ./manage.py test
 #./manage.py migrate
 
-farnworth/pre_fill.py
+farnsworth/pre_fill.py
 
 chown -R apache:apache .
 
-/usr/sbin/apache2 -D FOREGROUND
+/usr/sbin/apachectl -D FOREGROUND
