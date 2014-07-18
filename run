@@ -6,8 +6,8 @@ WSGISocketPrefix run/wsgi
 
 <VirtualHost *:80>
      ServerAdmin ${HOUSE_ABBREV}nm@bsc.coop
-     ServerName ${HOSTNAME}
-     ServerAlias www.${HOSTNAME}
+     ServerName ${URL}
+     ServerAlias www.${URL}
      ErrorLog logs/error_log
      CustomLog logs/access_log combined
 EOF
@@ -15,23 +15,23 @@ EOF
 # Redirect port 80 to 443 and enable ssl
 if [ -n "$ENABLE_SSL" ] ; then
     cat >> /etc/httpd/conf.d/vhost.conf <<EOF
-     Redirect permanent / https://${HOSTNAME}/
+     Redirect permanent / https://${URL}/
 </VirtualHost>
 
 <VirtualHost *:443>
      ServerAdmin ${HOUSE_ABBREV}nm@bsc.coop
-     ServerName ${HOSTNAME}
-     ServerAlias www.${HOSTNAME}
+     ServerName ${URL}
+     ServerAlias www.${URL}
      ErrorLog logs/error_log
      CustomLog logs/access_log combined
 
      SSLEngine on
-     SSLCertificateFile /etc/pki/tls/certs/${HOSTNAME}.crt
-     SSLCertificateKeyFile /etc/pki/tls/private/${HOSTNAME}.key
+     SSLCertificateFile /etc/pki/tls/certs/${URL}.crt
+     SSLCertificateKeyFile /etc/pki/tls/private/${URL}.key
      SSLCertificateChainFile /etc/pki/tls/certs/sub.class1.server.ca.pem
 
-     WSGIDaemonProcess ${HOSTNAME}
-     WSGIProcessGroup ${HOSTNAME}
+     WSGIDaemonProcess ${URL}
+     WSGIProcessGroup ${URL}
      WSGIScriptAlias / /var/www/farnsworth/farnsworth/wsgi.py
      Alias /static/ /var/www/farnsworth/static/
 EOF
@@ -49,7 +49,7 @@ SECRET_KEY = "$(openssl rand -base64 48)"
 HOUSE_NAME = "${HOUSE_NAME}"
 SHORT_HOUSE_NAME = "${SHORT_HOUSE_NAME}"
 HOUSE_ABBREV = "${HOUSE_ABBREV}"
-SITE_DOMAIN = "${HOSTNAME}"
+SITE_DOMAIN = "${URL}"
 POSTGRES_PASSWORD = "${POSTGRESQL_PASS}"
 EOF
 

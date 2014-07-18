@@ -21,7 +21,7 @@ $ docker run -d \
   -e HOUSE_NAME="Kingman Hall" \
   -e SHORT_HOUSE_NAME="Kingman" \
   -e HOUSE_ABBREV="kng" \
-  -e HOSTNAME="kingmanhall.org" \
+  -e URL="kingmanhall.org" \
   -e ENABLE_SSL="yes" \
   -v /root/tls:/etc/pki/tls \
   --link db:db \
