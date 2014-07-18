@@ -10,6 +10,7 @@ RUN git clone https://github.com/knagra/farnsworth.git /var/www/farnsworth
 RUN pip install -r /var/www/farnsworth/requirements.txt
 
 #ADD wsgi.conf /etc/httpd/conf.d/wsgi.conf
+ADD ssl.conf /etc/httpd/conf.d/ssl.conf
 ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 ADD local_settings.py /var/www/farnsworth/farnsworth/local_settings.py
