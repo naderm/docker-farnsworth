@@ -2,41 +2,43 @@
 set -e
 
 cat > /etc/httpd/conf.d/vhost.conf <<EOF
-NameVirtualHost *:80
+WSGISocketPrefix run/wsgi
 
 <VirtualHost *:80>
      ServerAdmin ${HOUSE_ABBREV}nm@bsc.coop
      ServerName ${HOSTNAME}
      ServerAlias www.${HOSTNAME}
-     # DocumentRoot /var/www/html/
-     Redirect permanent / https://${HOSTNAME}/
      ErrorLog logs/error_log
      CustomLog logs/access_log combined
+EOF
+
+# Redirect port 80 to 443 and enable ssl
+if [ -n "$ENABLE_SSL" ] ; then
+    cat >> /etc/httpd/conf.d/vhost.conf <<EOF
+     Redirect permanent / https://${HOSTNAME}/
 </VirtualHost>
-
-NameVirtualHost *:443
-
-WSGISocketPrefix run/wsgi
 
 <VirtualHost *:443>
      ServerAdmin ${HOUSE_ABBREV}nm@bsc.coop
      ServerName ${HOSTNAME}
      ServerAlias www.${HOSTNAME}
-     # DocumentRoot /var/www/html/
      ErrorLog logs/error_log
      CustomLog logs/access_log combined
 
+     SSLEngine on
+     SSLCertificateFile /etc/pki/tls/certs/${HOSTNAME}.crt
+     SSLCertificateKeyFile /etc/pki/tls/private/${HOSTNAME}.key
+     SSLCertificateChainFile /etc/pki/tls/certs/sub.class1.server.ca.pem
+
      WSGIDaemonProcess ${HOSTNAME}
      WSGIProcessGroup ${HOSTNAME}
-
      WSGIScriptAlias / /var/www/farnsworth/farnsworth/wsgi.py
-
      Alias /static/ /var/www/farnsworth/static/
+EOF
+fi
 
-     # SSLEngine on
-     # SSLCertificateFile /etc/pki/tls/certs/${HOSTNAME}.crt
-     # SSLCertificateKeyFile /etc/pki/tls/private/${HOSTNAME}.key
-     # SSLCertificateChainFile /etc/pki/tls/certs/sub.class1.server.ca.pem
+# Close the vhost tag
+cat >> /etc/httpd/conf.d/vhost.conf <<EOF
 </VirtualHost>
 EOF
 

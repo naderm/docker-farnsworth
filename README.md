@@ -14,12 +14,16 @@ $ docker run -d -p 5432:5432 \
   -e POSTGRESQL_DB=kingman \
   --name db \
   morshed/postgresql
-$ docker run -d -p 80:80 \
+$ docker run -d \
+  -p 80:80 \
+  -p 433:433 \
   -e POSTGRESQL_PASS=... \
   -e HOUSE_NAME="Kingman Hall" \
   -e SHORT_HOUSE_NAME="Kingman" \
   -e HOUSE_ABBREV="kng" \
   -e HOSTNAME="kingmanhall.org" \
+  -e ENABLE_SSL="yes" \
+  -v /root/tls:/etc/pki/tls \
   --link db:db \
   --link elasticsearch:elasticsearch \
   --name web \
