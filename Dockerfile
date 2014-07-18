@@ -14,7 +14,7 @@ ADD run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
 ADD local_settings.py /var/www/farnsworth/farnsworth/local_settings.py
 
-EXPOSE 80
+EXPOSE 80 443
 
 CMD ["/usr/local/bin/run"]
 
