@@ -53,7 +53,7 @@ SITE_DOMAIN = "${HOSTNAME}"
 POSTGRES_PASSWORD = "${POSTGRESQL_PASS}"
 EOF
 
-./manage.py collectstatic --noinput
+./manage.py collectstatic --noinput > /dev/null
 ./manage.py syncdb --noinput
 ./manage.py test
 #./manage.py migrate
