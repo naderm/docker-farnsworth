@@ -1,48 +1,39 @@
 #!/bin/bash
 set -e
 
-cat > /etc/httpd/conf.d/vhost.conf <<EOF
-WSGISocketPrefix run/wsgi
+FARNSWORTH=/opt/apps/farnsworth
+KEYS_FOLDER=/opt/apps/keys
+UWSGI_INI=/opt/apps/uwsgi.ini
+SUPERVISORD_CONF=/opt/apps/supervisord.conf
 
-<VirtualHost *:80>
-     ServerAdmin ${HOUSE_ABBREV}nm@bsc.coop
-     ServerName ${URL}
-     ServerAlias www.${URL}
-     ErrorLog logs/error_log
-     CustomLog logs/access_log combined
+cat > ${UWSGI_INI} <<EOF
+[uwsgi]
+master = true
+enable-threads = true
+processes = 4
+shared-socket = :80
+uid = www-data
+gid = www-data
+chdir = ${FARNSWORTH}
+module = farnsworth.wsgi:application
+env = DJANGO_SETTINGS_MODULE=farnsworth.settings
+http = =0
+static-map = /static=${FARNSWORTH}/static
 EOF
 
-# Redirect port 80 to 443 and enable ssl
-if [ -n "$ENABLE_SSL" ] ; then
-    cat >> /etc/httpd/conf.d/vhost.conf <<EOF
-     Redirect permanent / https://${URL}/
-</VirtualHost>
-
-<VirtualHost *:443>
-     ServerAdmin ${HOUSE_ABBREV}nm@bsc.coop
-     ServerName ${URL}
-     ServerAlias www.${URL}
-     ErrorLog logs/error_log
-     CustomLog logs/access_log combined
-
-     SSLEngine on
-     SSLCertificateFile /etc/pki/tls/certs/${URL}.crt
-     SSLCertificateKeyFile /etc/pki/tls/private/${URL}.key
-     SSLCertificateChainFile /etc/pki/tls/certs/sub.class1.server.ca.pem
-
-     WSGIDaemonProcess ${URL}
-     WSGIProcessGroup ${URL}
-     WSGIScriptAlias / /var/www/farnsworth/farnsworth/wsgi.py
-     Alias /static/ /var/www/farnsworth/static/
+if [ "xyes" = "x${ENABLE_SSL}" ] ; then
+    cat >> ${UWSGI_INI} <<EOF
+shared-socket = :443
+https = =1,${KEYS_FOLDER}/${URL}.crt,${KEYS_FOLDER}/${URL}.key
+route-if-not = equal:\${HTTPS};on redirect-permanent:https://${URL}\${REQUEST_URI}
 EOF
 fi
 
-# Close the vhost tag
-cat >> /etc/httpd/conf.d/vhost.conf <<EOF
-</VirtualHost>
-EOF
+cat ${UWSGI_INI}
 
-cd /var/www/farnsworth
+cd ${FARNSWORTH}
+
+git checkout -b "${SHORT_HOUSE_NAME,,}" "origin/${SHORT_HOUSE_NAME,,}"
 
 cat > farnsworth/house_settings.py <<EOF
 SECRET_KEY = "$(openssl rand -base64 48)"
@@ -53,13 +44,19 @@ SITE_DOMAIN = "${URL}"
 POSTGRES_PASSWORD = "${POSTGRESQL_PASS}"
 EOF
 
+echo "Collecting static files"
 ./manage.py collectstatic --noinput > /dev/null
-./manage.py syncdb --noinput
-./manage.py test
+echo "Creating database tables"
+./manage.py syncdb --noinput > /dev/null
+#./manage.py test
 #./manage.py migrate
 
-farnsworth/pre_fill.py
+if [ "xyes" = "x${PRE_FILL}" ] ; then
+    echo "Pre-filling database"
+    farnsworth/pre_fill.py
+fi
 
-chown -R apache:apache .
+chown -R www-data:www-data .
 
-/usr/sbin/apachectl -D FOREGROUND
+echo "Running uwsgi server"
+supervisord -n -c ${SUPERVISORD_CONF}

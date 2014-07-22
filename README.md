@@ -23,7 +23,7 @@ $ docker run -d \
   -e HOUSE_ABBREV="kng" \
   -e URL="kingmanhall.org" \
   -e ENABLE_SSL="yes" \
-  -v /root/tls:/etc/pki/tls \
+  -e PRE_FILL="yes" \
   --link db:db \
   --link elasticsearch:elasticsearch \
   --name web \
