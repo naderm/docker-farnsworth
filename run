@@ -19,6 +19,7 @@ module = farnsworth.wsgi:application
 env = DJANGO_SETTINGS_MODULE=farnsworth.settings
 http = =0
 static-map = /static=${FARNSWORTH}/static
+route-uri = ^/internal/(.*)$ rewrite:/$1
 EOF
 
 if [ "xyes" = "x${ENABLE_SSL}" ] ; then
