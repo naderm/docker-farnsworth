@@ -1,3 +1,6 @@
 keys/*.crt
 keys/*.key
 keys/*.pem
+fig.yml
+settings/house_settings.py
+*~

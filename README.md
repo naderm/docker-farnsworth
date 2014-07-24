@@ -2,31 +2,45 @@
 
 Docker config file for [Farnsworth](https://github.com/knagra/farnsworth)
 
-Requires separate docker instances for [PostgreSQL database](https://registry.hub.docker.com/u/morshed/postgresql) and [ElasticSearch](https://registry.hub.docker.com/u/dockerfile/elasticsearch)
+# Fig
+
+Install fig with:
 
 ```
-$ docker run -d -p 9200:9200 \
-  --name elasticsearch \
-  dockerfile/elasticsearch
-$ docker run -d -p 5432:5432 \
-  -e POSTGRESQL_USER=kingman_admin \
-  -e POSTGRESQL_PASS=... \
-  -e POSTGRESQL_DB=kingman \
-  --name db \
-  morshed/postgresql
-$ docker run -d \
-  -p 80:80 \
-  -p 433:433 \
-  -e POSTGRESQL_PASS=... \
-  -e HOUSE_NAME="Kingman Hall" \
-  -e SHORT_HOUSE_NAME="Kingman" \
-  -e HOUSE_ABBREV="kng" \
-  -e URL="kingmanhall.org" \
-  -e ENABLE_SSL="yes" \
-  -e PRE_FILL="yes" \
-  --link db:db \
-  --link elasticsearch:elasticsearch \
-  --name web \
-  morshed/farnsworth
+$ sudo pip install -U fig
 ```
 
+Then bring up your Farnsworth deployment using fig:
+
+```
+$ cp fig.yml.example fig.yml
+$ $EDITOR fig.yml
+$ cp settings/house_settings.py.example settings/house_settings.py
+$ $EDITOR settings/house_settings.py
+$ sudo fig up
+```
+
+(This may take a while as it needs to build the docker images the first time)
+
+# Backups
+
+Backups require the postgresql package, run them with the following command:
+
+```
+$ pg_dump -h localhost -U docker docker | gzip > "backup-<house>-$(date +%F).db.gz"
+```
+
+You will need to enter the password used to create the database instance in fig.yml
+
+# HTTPS
+
+Add keys... update fig
+
+# SELinux
+
+...
+
+```
+$ sudo chcon -Rt svirt_sandbox_file_t keys
+$ sudo chcon -Rt svirt_sandbox_file_t settings
+```

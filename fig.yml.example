@@ -1,0 +1,27 @@
+elasticsearch:
+  image: dockerfile/elasticsearch
+  expose:
+    - "9200"
+db:
+  image: orchardup/postgresql
+  ports:
+    - "localhost:5432:5432"
+  environment:
+    - POSTGRESQL_PASS=...  # i.e. hunter2
+web:
+  build: .
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+    - db
+    - elasticsearch
+  environment:
+    - POSTGRESQL_PASS=...  # i.e. hunter2
+    - BRANCH=...           # Optional branch of git to deploy with, i.e. kingman
+    - ENABLE_SSL=no        # Change to yes to enable https on your site (and redirect http to https)
+    - PRE_FILL=no          # Change to yes to pre-fill the database with managers, workshifts, etc
+  volumes:
+    - settings/local_settings.py:/opt/apps/farnsworth/farnsworth/local_settings.py
+    - settings/house_settings.py:/opt/apps/farnsworth/farnsworth/house_settings.py
+    - keys/:/opt/apps/keys

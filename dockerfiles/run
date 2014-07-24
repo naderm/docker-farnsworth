@@ -6,6 +6,7 @@ KEYS_FOLDER=/opt/apps/keys
 UWSGI_INI=/opt/apps/uwsgi.ini
 SUPERVISORD_CONF=/opt/apps/supervisord.conf
 
+# Generate the uWSGI configuration
 cat > ${UWSGI_INI} <<EOF
 [uwsgi]
 master = true
@@ -25,30 +26,28 @@ EOF
 if [ "xyes" = "x${ENABLE_SSL}" ] ; then
     cat >> ${UWSGI_INI} <<EOF
 shared-socket = :443
-https = =1,${KEYS_FOLDER}/${URL}.crt,${KEYS_FOLDER}/${URL}.key
-route-if-not = equal:\${HTTPS};on redirect-permanent:https://${URL}\${REQUEST_URI}
+https = =1,${KEYS_FOLDER}/public.crt,${KEYS_FOLDER}/prviate.key
+route-if-not = equal:\${HTTPS};on redirect-permanent:https://\${HTTP_HOST}\${REQUEST_URI}
 EOF
 fi
 
-cat ${UWSGI_INI}
-
 cd ${FARNSWORTH}
 
-git checkout -b "${SHORT_HOUSE_NAME,,}" "origin/${SHORT_HOUSE_NAME,,}"
+# Check out a house-specific branch of the code if need be
+if [ -n "${BRANCH}" ] ; then
+    git checkout -b "${BRANCH}" "origin/${BRANCH}"
+fi
 
-cat > farnsworth/house_settings.py <<EOF
-SECRET_KEY = "$(openssl rand -base64 48)"
-HOUSE_NAME = "${HOUSE_NAME}"
-SHORT_HOUSE_NAME = "${SHORT_HOUSE_NAME}"
-HOUSE_ABBREV = "${HOUSE_ABBREV}"
-SITE_DOMAIN = "${URL}"
-POSTGRES_PASSWORD = "${POSTGRESQL_PASS}"
-EOF
+# Update the repo
+git pull
 
+# Initialize the database, collect files, etc ...
 echo "Collecting static files"
 ./manage.py collectstatic --noinput > /dev/null
 echo "Creating database tables"
 ./manage.py syncdb --noinput > /dev/null
+echo "Rebuilding search index"
+./manage.py rebuild_index --noinput > /dev/null
 #./manage.py test
 #./manage.py migrate
 
@@ -59,5 +58,6 @@ fi
 
 chown -R www-data:www-data .
 
-echo "Running uwsgi server"
+# Run the uWSGI + cron daemons
+echo "Running uWSGI server"
 supervisord -n -c ${SUPERVISORD_CONF}
