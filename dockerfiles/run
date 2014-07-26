@@ -10,8 +10,8 @@ SUPERVISORD_CONF=/opt/apps/supervisord.conf
 cat > ${UWSGI_INI} <<EOF
 [uwsgi]
 master = true
-enable-threads = true
-processes = 4
+#enable-threads = true
+#processes = 4
 shared-socket = :80
 uid = www-data
 gid = www-data
@@ -26,7 +26,7 @@ EOF
 if [ "xyes" = "x${ENABLE_SSL}" ] ; then
     cat >> ${UWSGI_INI} <<EOF
 shared-socket = :443
-https = =1,${KEYS_FOLDER}/public.crt,${KEYS_FOLDER}/prviate.key
+https = =1,${KEYS_FOLDER}/public.crt,${KEYS_FOLDER}/private.key
 route-if-not = equal:\${HTTPS};on redirect-permanent:https://\${HTTP_HOST}\${REQUEST_URI}
 EOF
 fi
