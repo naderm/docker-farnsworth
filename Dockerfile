@@ -11,6 +11,7 @@ RUN pip install uwsgi supervisor-stdout
 RUN mkdir -p /opt/apps
 RUN git clone https://github.com/knagra/farnsworth.git /opt/apps/farnsworth
 RUN pip install -r /opt/apps/farnsworth/requirements.txt
+RUN pip install git+git://github.com/django/django.git@1.7c2
 
 EXPOSE 80 443
 CMD ["/usr/local/bin/run"]
