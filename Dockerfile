@@ -4,7 +4,7 @@ MAINTAINER Nader Morshed <morshed.nader@gmail.com>
 # EPEL required for pip and supervisor
 RUN rpm -ivh http://dl.fedoraproject.org/pub/epel/beta/7/x86_64/epel-release-7-0.2.noarch.rpm
 RUN yum -y update
-RUN yum install -y postgresql-devel python-devel python-pip gcc mercurial git libffi-devel curl openssl openssl-devel supervisor
+RUN yum install -y postgresql-devel python-devel python-pip gcc mercurial git libffi-devel curl openssl openssl-devel supervisor mailcap
 RUN pip install uwsgi supervisor-stdout
 
 # Clone Farnsworth
