@@ -20,7 +20,7 @@ RUN groupadd --system www-data
 RUN useradd --gid www-data --system --shell /bin/false www-data
 
 RUN yum install -y cronie
-ADD dockerfiles/farnsworth.cron /etc/crontab.d/farnsworth.cron
+ADD dockerfiles/farnsworth.cron /etc/cron.d/farnsworth.cron
 #ADD settings/house_settings.py /opt/apps/farnsworth/farnsworth/house_settings.py
 #ADD settings/local_settings.py /opt/apps/farnsworth/farnsworth/local_settings.py
 #ADD keys /opt/apps/keys
