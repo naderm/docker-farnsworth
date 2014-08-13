@@ -47,7 +47,7 @@ echo "Collecting static files"
 echo "Creating database tables"
 ./manage.py migrate --noinput > /dev/null
 echo "Rebuilding search index"
-./manage.py rebuild_index --noinput > /dev/null
+./manage.py update_index --noinput > /dev/null
 #./manage.py test
 #./manage.py migrate
 
