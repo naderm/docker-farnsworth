@@ -48,8 +48,6 @@ echo "Creating database tables"
 ./manage.py migrate --noinput > /dev/null
 echo "Rebuilding search index"
 ./manage.py update_index > /dev/null
-#./manage.py test
-#./manage.py migrate
 
 if [ "xyes" = "x${PRE_FILL}" ] ; then
     echo "Pre-filling database"
