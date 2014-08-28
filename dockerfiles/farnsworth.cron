@@ -1,1 +1,1 @@
-*/5 * * * * www-data /opt/apps/farnsworth/manage.py runcrons
+*/5 * * * * root /opt/apps/farnsworth/manage.py runcrons
