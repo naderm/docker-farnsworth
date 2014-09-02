@@ -47,9 +47,7 @@ echo "Collecting static files"
 echo "Creating database tables"
 ./manage.py migrate --noinput > /dev/null
 echo "Rebuilding search index"
-./manage.py update_index --noinput > /dev/null
-#./manage.py test
-#./manage.py migrate
+./manage.py update_index > /dev/null
 
 if [ "xyes" = "x${PRE_FILL}" ] ; then
     echo "Pre-filling database"

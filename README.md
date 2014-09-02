@@ -34,13 +34,24 @@ You will need to enter the password used to create the database instance in fig.
 
 # HTTPS
 
-Add keys... update fig
+To enable SSL, modify your fig.yml file to enable SSL and mount a volume containing the SSL keys:
+
+```
+web:
+  environment:
+    - ENABLE_SSL=yes
+...
+  volumes:
+    - keys/:/opt/apps/keys
+```
+
+Then create `keys/public.crt` and `keys/private.key` for your public and private key respectively.
 
 # SELinux
 
-...
+If your host machine is running CentOS or RHEL, or is otherwise running SELinux you will need to give docker permission to read the folders containing the settings and optionally the ssl keys.
 
 ```
-$ sudo chcon -Rt svirt_sandbox_file_t keys
 $ sudo chcon -Rt svirt_sandbox_file_t settings
+$ sudo chcon -Rt svirt_sandbox_file_t keys
 ```
