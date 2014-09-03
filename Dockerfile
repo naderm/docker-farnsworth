@@ -2,9 +2,9 @@ FROM centos
 MAINTAINER Nader Morshed <morshed.nader@gmail.com>
 
 # EPEL required for pip and supervisor
-RUN rpm -ivh http://dl.fedoraproject.org/pub/epel/beta/7/x86_64/epel-release-7-1.noarch.rpm
 RUN yum -y update
-RUN yum install -y postgresql-devel python-devel python-pip gcc mercurial git libffi-devel curl openssl openssl-devel supervisor mailcap
+RUN yum install -y epel-release
+RUN yum install -y postgresql-devel python-devel python-pip gcc mercurial git libffi-devel curl openssl openssl-devel supervisor mailcap cronie
 RUN pip install uwsgi supervisor-stdout
 
 # Clone Farnsworth
@@ -18,7 +18,6 @@ CMD ["/usr/local/bin/run"]
 RUN groupadd --system www-data
 RUN useradd --gid www-data --system --shell /bin/false www-data
 
-RUN yum install -y cronie
 ADD dockerfiles/farnsworth.cron /etc/cron.d/farnsworth.cron
 RUN chmod 600 /etc/cron.d/farnsworth.cron
 #ADD settings/house_settings.py /opt/apps/farnsworth/farnsworth/house_settings.py
