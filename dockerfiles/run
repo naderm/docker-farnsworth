@@ -5,6 +5,7 @@ FARNSWORTH=/opt/apps/farnsworth
 KEYS_FOLDER=/opt/apps/keys
 UWSGI_INI=/opt/apps/uwsgi.ini
 SUPERVISORD_CONF=/opt/apps/supervisord.conf
+FARNSWORTH_CRON=/etc/cron.d/farnsworth.cron
 
 # Generate the uWSGI configuration
 cat > ${UWSGI_INI} <<EOF
@@ -30,6 +31,16 @@ https = =1,${KEYS_FOLDER}/public.crt,${KEYS_FOLDER}/private.key
 route-if-not = equal:\${HTTPS};on redirect-permanent:https://\${HTTP_HOST}\${REQUEST_URI}
 EOF
 fi
+
+# Generate the cron file
+cat > ${FARNSWORTH_CRON} <<EOF
+POSTGRESQL_PASS="${POSTGRESQL_PASS}"
+DB_1_PORT_5432_TCP_ADDR="${DB_1_PORT_5432_TCP_ADDR}"
+DB_1_PORT_5432_TCP_PORT="${DB_1_PORT_5432_TCP_PORT}"
+*/5 * * * * root /opt/apps/farnsworth/manage.py runcrons
+EOF
+
+chmod 644 ${FARNSWORTH_CRON}
 
 cd ${FARNSWORTH}
 

@@ -18,8 +18,6 @@ CMD ["/usr/local/bin/run"]
 RUN groupadd --system www-data
 RUN useradd --gid www-data --system --shell /bin/false www-data
 
-ADD dockerfiles/farnsworth.cron /etc/cron.d/farnsworth.cron
-RUN chmod 644 /etc/cron.d/farnsworth.cron
 ADD dockerfiles/supervisord.conf /opt/apps/supervisord.conf
 ADD dockerfiles/run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run
