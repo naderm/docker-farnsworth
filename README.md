@@ -2,7 +2,29 @@
 
 Docker config file for [Farnsworth](https://github.com/knagra/farnsworth)
 
-# Fig
+# Install Docker
+## Debian
+
+Install docker on debian with:
+
+```
+$ sudo apt-get install docker.io
+```
+
+## CentOS
+
+Docker is available through [EPEL](https://fedoraproject.org/wiki/EPEL) on CentOS:
+
+```
+$ sudo yum install epel-release
+$ sudo yum install docker-io
+```
+
+## OS X
+
+[Follow these instructions on Docker's website to install the package on OS X](http://docs.docker.com/installation/mac/)
+
+# Install Fig
 
 Install fig with:
 
@@ -10,7 +32,9 @@ Install fig with:
 $ sudo pip install -U fig
 ```
 
-Then bring up your Farnsworth deployment using fig:
+# Deploy
+
+Bring up your Farnsworth deployment using fig:
 
 ```
 $ cp fig.yml.example fig.yml
