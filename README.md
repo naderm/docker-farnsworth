@@ -2,34 +2,12 @@
 
 Docker config file for [Farnsworth](https://github.com/knagra/farnsworth)
 
-# Install Docker
-## Debian
+# Install Docker and Fig
 
-Install docker on debian with:
+Follow these instructions to install Docker and Fig on your system of choice:
 
-```
-$ sudo apt-get install docker.io
-```
-
-## CentOS
-
-Docker is available through the Extras repository on CentOS 7+
-
-```
-$ sudo yum install docker
-```
-
-## OS X
-
-[Follow these instructions on Docker's website to install the package on OS X](http://docs.docker.com/installation/mac/)
-
-# Install Fig
-
-Install fig with:
-
-```
-$ sudo pip install -U fig
-```
+- [Docker](http://docs.docker.com/installation/)
+- [Fig](http://www.fig.sh/install.html)
 
 # Deploy
 
