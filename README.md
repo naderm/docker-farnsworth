@@ -13,11 +13,10 @@ $ sudo apt-get install docker.io
 
 ## CentOS
 
-Docker is available through [EPEL](https://fedoraproject.org/wiki/EPEL) on CentOS:
+Docker is available through the Extras repository on CentOS 7+
 
 ```
-$ sudo yum install epel-release
-$ sudo yum install docker-io
+$ sudo yum install docker
 ```
 
 ## OS X
