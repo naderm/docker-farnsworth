@@ -3,11 +3,13 @@ elasticsearch:
   expose:
     - "9200"
 db:
-  image: orchardup/postgresql
+  image: postgresql
   ports:
     - "localhost:5432:5432"
   environment:
     - POSTGRESQL_PASS=...  # i.e. hunter2
+  volumes:
+    - pg_data/:/var/lib/postgresql/data
 web:
   build: .
   ports:
