@@ -5,8 +5,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'docker',
-        'USER': 'docker',
-        'PASSWORD': os.environ.get('POSTGRESQL_PASS'),
+        'USER': 'postgres',
+        'PASSWORD': os.environ.get('POSTGRESQL_PASS', ''),
         'HOST': os.environ.get('DB_1_PORT_5432_TCP_ADDR'),
         'PORT': os.environ.get('DB_1_PORT_5432_TCP_PORT'),
     },
@@ -19,7 +19,7 @@ HAYSTACK_CONNECTIONS = {
             os.environ.get('ELASTICSEARCH_1_PORT_9200_TCP_ADDR'),
             os.environ.get('ELASTICSEARCH_1_PORT_9200_TCP_PORT'),
         ),
-        'INDEX_NAME': 'docker', #XXX?
+        'INDEX_NAME': 'docker',
     },
 }
 
