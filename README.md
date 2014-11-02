@@ -55,4 +55,5 @@ If your host machine is running CentOS or RHEL, or is otherwise running SELinux 
 ```
 $ sudo chcon -Rt svirt_sandbox_file_t settings
 $ sudo chcon -Rt svirt_sandbox_file_t keys
+$ sudo chcon -Rt svirt_sandbox_file_t pg_data
 ```

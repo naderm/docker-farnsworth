@@ -4,4 +4,4 @@ keys/*.pem
 fig.yml
 settings/house_settings.py
 *~
-pg_data/
+pg_data/*
