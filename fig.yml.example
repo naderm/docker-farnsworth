@@ -3,11 +3,9 @@ elasticsearch:
   expose:
     - "9200"
 db:
-  image: postgresql
+  image: postgres
   ports:
-    - "localhost:5432:5432"
-  environment:
-    - POSTGRESQL_PASS=...  # i.e. hunter2
+    - 127.0.0.1:5432:5432
   volumes:
     - pg_data/:/var/lib/postgresql/data
 web:
@@ -19,7 +17,6 @@ web:
     - db
     - elasticsearch
   environment:
-    - POSTGRESQL_PASS=...  # i.e. hunter2
     - BRANCH=...           # Optional branch of git to deploy with, i.e. kingman
     - ENABLE_SSL=no        # Change to yes to enable https on your site (and redirect http to https)
     - PRE_FILL=no          # Change to yes to pre-fill the database with managers, workshifts, etc
