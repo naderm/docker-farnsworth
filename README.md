@@ -28,10 +28,18 @@ $ sudo fig up
 Backups require the postgresql package, run them with the following command:
 
 ```
-$ pg_dump -h localhost -U docker docker | gzip > "backup-<house>-$(date +%F).db.gz"
+$ pg_dump -h localhost -U postgres docker | gzip > "backup-<house>-$(date +%F).db.gz"
 ```
 
 You will need to enter the password used to create the database instance in fig.yml
+
+Backups can be restored with the following command:
+
+```
+$ fig up -d db      # Only bring up the database
+$ gunzip -c "backup-<house>-<date>.db.gz | psql -h localhost -U postgres docker
+$ fig up -d         # Bring up the rest of the site
+```
 
 # HTTPS
 
