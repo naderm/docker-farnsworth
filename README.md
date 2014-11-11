@@ -61,7 +61,5 @@ Then create `keys/public.crt` and `keys/private.key` for your public and private
 If your host machine is running CentOS or RHEL, or is otherwise running SELinux you will need to give docker permission to read the folders containing the settings and optionally the ssl keys.
 
 ```
-$ sudo chcon -Rt svirt_sandbox_file_t settings
-$ sudo chcon -Rt svirt_sandbox_file_t keys
-$ sudo chcon -Rt svirt_sandbox_file_t pg_data
+$ sudo chcon -Rt svirt_sandbox_file_t settings keys pg_data
 ```
