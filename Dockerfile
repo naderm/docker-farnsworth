@@ -4,7 +4,7 @@ MAINTAINER Nader Morshed <morshed.nader@gmail.com>
 # EPEL required for pip and supervisor
 RUN yum -y update && \
     yum install -y epel-release && \
-    yum install -y postgresql-devel python-devel python-pip gcc mercurial git libffi-devel curl openssl openssl-devel supervisor mailcap cronie && \
+    yum install -y postgresql-devel python-devel python-pip gcc git libffi-devel curl openssl openssl-devel supervisor mailcap cronie && \
     pip install uwsgi supervisor-stdout && \
     yum clean all
 
