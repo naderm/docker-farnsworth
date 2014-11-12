@@ -47,6 +47,10 @@ To enable SSL, modify your fig.yml file to enable SSL and mount a volume contain
 
 ```
 web:
+  ports:
+    - "80:80"
+    - "443:443"
+...
   environment:
     - ENABLE_SSL=yes
 ...
