@@ -30,7 +30,7 @@ shared-socket = :443
 https = =1,${KEYS_FOLDER}/public.crt,${KEYS_FOLDER}/private.key
 plugins = router_redirect
 route-if-not = equal:\${HTTPS};on redirect-permanent:https://\${HTTP_HOST}\${REQUEST_URI}
-route-if = equal:\${HTTPS};on addheader:Strict-Transport-Security: max-age=31536000
+route-if = equal:\${HTTPS};on addheader:Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 EOF
 fi
 
