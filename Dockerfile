@@ -2,10 +2,11 @@ FROM centos
 MAINTAINER Nader Morshed <morshed.nader@gmail.com>
 
 # EPEL required for pip and supervisor
-RUN yum -y update
-RUN yum install -y epel-release
-RUN yum install -y postgresql-devel python-devel python-pip gcc mercurial git libffi-devel curl openssl openssl-devel supervisor mailcap cronie
-RUN pip install uwsgi supervisor-stdout
+RUN yum -y update && \
+    yum install -y epel-release && \
+    yum install -y postgresql-devel python-devel python-pip gcc mercurial git libffi-devel curl openssl openssl-devel supervisor mailcap cronie && \
+    pip install uwsgi supervisor-stdout && \
+    yum clean all
 
 # Clone Farnsworth
 RUN mkdir -p /opt/apps
@@ -15,8 +16,7 @@ RUN pip install -r /opt/apps/farnsworth/requirements.txt
 EXPOSE 80 443
 CMD ["/usr/local/bin/run"]
 
-RUN groupadd --system www-data
-RUN useradd --gid www-data --system --shell /bin/false www-data
+RUN groupadd --system www-data && useradd --gid www-data --system --shell /bin/false www-data
 
 ADD dockerfiles/supervisord.conf /opt/apps/supervisord.conf
 ADD dockerfiles/run /usr/local/bin/run
