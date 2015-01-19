@@ -62,11 +62,6 @@ echo "Creating database tables"
 echo "Rebuilding search index"
 ./manage.py update_index > /dev/null
 
-if [ "xyes" = "x${PRE_FILL}" ] ; then
-    echo "Pre-filling database"
-    farnsworth/pre_fill.py
-fi
-
 chown -R www-data:www-data .
 
 # Run the uWSGI + cron daemons
