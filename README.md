@@ -18,7 +18,9 @@ $ cp fig.yml.example fig.yml
 $ $EDITOR fig.yml
 $ cp settings/house_settings.py.example settings/house_settings.py
 $ $EDITOR settings/house_settings.py
-$ sudo fig up
+$ fig up -d
+# Add initial content to the site
+$ fig run web /opt/apps/farnsworth/farnsworth/pre_fill.py --managers --requests --workshift
 ```
 
 (This may take a while as it needs to build the docker images the first time)
@@ -36,9 +38,11 @@ You will need to enter the password used to create the database instance in fig.
 Backups can be restored with the following command:
 
 ```
-$ fig up -d db      # Only bring up the database
+# Only bring up the database
+$ fig up -d db
 $ gunzip -c "backup-<house>-<date>.db.gz | psql -h localhost -U postgres docker
-$ fig up -d         # Bring up the rest of the site
+# Bring up the rest of the site
+$ fig up -d
 ```
 
 # HTTPS
