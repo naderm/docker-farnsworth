@@ -22,7 +22,6 @@ web:
     - POSTGRESQL_PASS=...
     - BRANCH=...           # Optional branch of git to deploy with, i.e. kingman
     - ENABLE_SSL=no        # Change to yes to enable https on your site (and redirect http to https)
-    - PRE_FILL=no          # Change to yes to pre-fill the database with managers, workshifts, etc
   volumes:
     - settings/local_settings.py:/opt/apps/farnsworth/farnsworth/local_settings.py
     - settings/house_settings.py:/opt/apps/farnsworth/farnsworth/house_settings.py
