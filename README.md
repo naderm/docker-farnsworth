@@ -1,6 +1,6 @@
 # docker-farnsworth
 
-Docker config file for [Farnsworth](https://github.com/knagra/farnsworth)
+Docker repository for deploying [Farnsworth](https://github.com/knagra/farnsworth)
 
 # Install Docker and Fig
 
