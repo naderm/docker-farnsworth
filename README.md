@@ -30,7 +30,7 @@ $ fig run web /opt/apps/farnsworth/farnsworth/pre_fill.py --managers --requests 
 Backups require the postgresql package, run them with the following command:
 
 ```
-$ pg_dump -h localhost -U postgres docker | gzip > "backup-<house>-$(date +%F).db.gz"
+$ pg_dump -Fc -h localhost -U postgres docker > "backup-<house>-$(date +%F).dump"
 ```
 
 You will need to enter the password used to create the database instance in fig.yml
@@ -38,9 +38,14 @@ You will need to enter the password used to create the database instance in fig.
 Backups can be restored with the following command:
 
 ```
-# Only bring up the database
+# Clear all previous settings and bring up the database
+$ fig stop
+$ fig rm --force db
+$ rm -rf pg_data
+$ mkdir pg_data
+$ sudo chcon -Rt svirt_sandbox_file_t pg_data
 $ fig up -d db
-$ gunzip -c "backup-<house>-<date>.db.gz | psql -h localhost -U postgres docker
+$ pg_restore -C -h localhost -U postgres -d docker "backup-<house>-<date>.dump"
 # Bring up the rest of the site
 $ fig up -d
 ```
