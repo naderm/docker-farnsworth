@@ -18,7 +18,7 @@ uid = www-data
 gid = www-data
 chdir = ${FARNSWORTH}
 module = farnsworth.wsgi:application
-env = DJANGO_SETTINGS_MODULE=farnsworth.settings
+env = DJANGO_SETTINGS_MODULE=farnsworth.local_settings
 http = =0
 static-map = /static=${FARNSWORTH}/static
 route-uri = ^/internal/(.*)$ redirect:/\$1
