@@ -7,6 +7,8 @@ UWSGI_INI=/opt/apps/uwsgi.ini
 SUPERVISORD_CONF=/opt/apps/supervisord.conf
 FARNSWORTH_CRON=/etc/cron.d/farnsworth.cron
 
+export DJANGO_SETTINGS_MODULE="farnsworth.local_settings"
+
 # Generate the uWSGI configuration
 cat > ${UWSGI_INI} <<EOF
 [uwsgi]
@@ -18,7 +20,7 @@ uid = www-data
 gid = www-data
 chdir = ${FARNSWORTH}
 module = farnsworth.wsgi:application
-env = DJANGO_SETTINGS_MODULE=farnsworth.local_settings
+env = DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
 http = =0
 static-map = /static=${FARNSWORTH}/static
 route-uri = ^/internal/(.*)$ redirect:/\$1
