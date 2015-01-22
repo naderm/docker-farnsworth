@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+FARNSWORTH=/opt/apps/farnsworth
+UWSGI_INI=/opt/apps/uwsgi.ini
+
+cd "${FARNSWORTH}"
+
+# Update the repo
+git pull
+
+echo "Collecting static files"
+./manage.py collectstatic --noinput > /dev/null
+echo "Creating database tables"
+./manage.py migrate --noinput > /dev/null
+
+chown -R www-data:www-data .

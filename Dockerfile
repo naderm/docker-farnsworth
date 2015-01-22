@@ -21,5 +21,6 @@ CMD ["/usr/local/bin/run"]
 RUN groupadd --system www-data && useradd --gid www-data --system --shell /bin/false www-data
 
 COPY dockerfiles/supervisord.conf /opt/apps/supervisord.conf
+COPY dockerfiles/update /usr/local/bin/update
 COPY dockerfiles/run /usr/local/bin/run
 RUN chmod +x /usr/local/bin/run

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+if [ -z "$1" ]
+then
+	echo "Usage: restore <file>"
+	exit 1
+fi
+
+fig stop
+mkdir -p pg_data
+chcon -Rt svirt_sandbox_file_t pg_data
+fig up -d db
+sleep 5
+fig exec db pg_restore -C -h localhost -U postgres -d docker "$1"
+fig stop db

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ -z "$1" ]
+then
+	echo "Usage: backup <file>"
+	exit 1
+fi
+
+fig exec db pg_dump -Fc -h localhost -U postgres docker > "$1"
