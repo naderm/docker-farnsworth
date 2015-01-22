@@ -2,4 +2,6 @@
 
 set -e
 
+cd "$(dirname $(readlink -f "$0"))/../"
+
 fig exec web /usr/local/bin/update

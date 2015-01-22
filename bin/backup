@@ -8,4 +8,6 @@ then
 	exit 1
 fi
 
+cd "$(dirname $(readlink -f "$0"))/../"
+
 fig exec db pg_dump -Fc -h localhost -U postgres docker > "$1"

@@ -8,6 +8,8 @@ then
 	exit 1
 fi
 
+cd "$(dirname $(readlink -f "$0"))/../"
+
 fig stop
 mkdir -p pg_data
 chcon -Rt svirt_sandbox_file_t pg_data
