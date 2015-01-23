@@ -7,8 +7,6 @@ UWSGI_INI=/opt/apps/uwsgi.ini
 SUPERVISORD_CONF=/opt/apps/supervisord.conf
 FARNSWORTH_CRON=/etc/cron.d/farnsworth.cron
 
-export DJANGO_SETTINGS_MODULE="farnsworth.local_settings"
-
 # Generate the uWSGI configuration
 cat > ${UWSGI_INI} <<EOF
 [uwsgi]
