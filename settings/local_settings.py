@@ -3,6 +3,9 @@ import os
 
 from farnsworth.settings import *
 
+DEBUG = False
+TEMPLATE_DEBUG = None
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
