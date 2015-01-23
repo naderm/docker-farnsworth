@@ -27,13 +27,3 @@ HAYSTACK_CONNECTIONS = {
         'INDEX_NAME': 'docker',
     },
 }
-
-# Change the base URL to "/" (By default it is "/<house>")
-BASE_URL = ""
-MEDIA_URL = BASE_URL + '/media/'
-STATIC_URL = BASE_URL + '/static/'
-
-LOGIN_URL = BASE_URL + "/login/"
-LOGOUT_URL = BASE_URL + "/logout/"
-LOGIN_REDIRECT_URL = BASE_URL
-LOGIN_ERROR_URL = BASE_URL
