@@ -61,7 +61,7 @@ echo "Collecting static files"
 ./manage.py collectstatic --noinput > /dev/null
 echo "Creating database tables"
 ./manage.py migrate --noinput > /dev/null
-echo "Rebuilding search index"
+echo "Updating search index"
 ./manage.py update_index > /dev/null
 
 chown -R www-data:www-data .
