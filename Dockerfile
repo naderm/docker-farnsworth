@@ -1,4 +1,4 @@
->FROM centos
+FROM centos
 MAINTAINER Nader Morshed <morshed.nader@gmail.com>
 
 # EPEL required for pip and supervisor
