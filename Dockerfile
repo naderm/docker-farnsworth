@@ -1,4 +1,4 @@
-FROM centos
+>FROM centos
 MAINTAINER Nader Morshed <morshed.nader@gmail.com>
 
 # EPEL required for pip and supervisor
@@ -23,4 +23,4 @@ RUN groupadd --system www-data && useradd --gid www-data --system --shell /bin/f
 COPY dockerfiles/supervisord.conf /opt/apps/supervisord.conf
 COPY dockerfiles/update /usr/local/bin/update
 COPY dockerfiles/run /usr/local/bin/run
-RUN chmod +x /usr/local/bin/run
+RUN chmod +x /usr/local/bin/run && chmod +x /usr/local/bin/update
