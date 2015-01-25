@@ -1,14 +1,15 @@
 #!/bin/bash
 set -e
 
-FARNSWORTH=/opt/apps/farnsworth
-KEYS_FOLDER=/opt/apps/keys
-UWSGI_INI=/opt/apps/uwsgi.ini
-SUPERVISORD_CONF=/opt/apps/supervisord.conf
-FARNSWORTH_CRON=/etc/cron.d/farnsworth.cron
+FARNSWORTH="/opt/apps/farnsworth"
+KEYS_FOLDER="/opt/apps/keys"
+UWSGI_INI="/opt/apps/uwsgi.ini"
+UWSGI_PID="/opt/apps/uwsgi.pid"
+SUPERVISORD_CONF="/opt/apps/supervisord.conf"
+FARNSWORTH_CRON="/etc/cron.d/farnsworth.cron"
 
 # Generate the uWSGI configuration
-cat > ${UWSGI_INI} <<EOF
+cat > "${UWSGI_INI}" <<EOF
 [uwsgi]
 master = true
 #enable-threads = true
@@ -22,10 +23,12 @@ env = DJANGO_SETTINGS_MODULE=farnsworth.local_settings
 http = =0
 static-map = /static=${FARNSWORTH}/static
 route-uri = ^/internal/(.*)$ redirect:/\$1
+pidfile = ${UWSGI_PID}
+touch-reload = ${UWSGI_PID}
 EOF
 
 if [ "xyes" = "x${ENABLE_SSL}" ] ; then
-    cat >> ${UWSGI_INI} <<EOF
+    cat >> "${UWSGI_INI}" <<EOF
 shared-socket = :443
 https = =1,${KEYS_FOLDER}/public.crt,${KEYS_FOLDER}/private.key
 plugins = router_redirect
@@ -35,16 +38,16 @@ EOF
 fi
 
 # Generate the cron file
-cat > ${FARNSWORTH_CRON} <<EOF
+cat > "${FARNSWORTH_CRON}" <<EOF
 POSTGRESQL_PASS="${POSTGRESQL_PASS}"
 DB_1_PORT_5432_TCP_ADDR="${DB_1_PORT_5432_TCP_ADDR}"
 DB_1_PORT_5432_TCP_PORT="${DB_1_PORT_5432_TCP_PORT}"
-*/5 * * * * root /opt/apps/farnsworth/manage.py runcrons
+*/5 * * * * root ${FARNSWORTH}/manage.py runcrons
 EOF
 
-chmod 644 ${FARNSWORTH_CRON}
+chmod 644 "${FARNSWORTH_CRON}"
 
-cd ${FARNSWORTH}
+cd "${FARNSWORTH}"
 
 # Check out a house-specific branch of the code if need be
 if [ -n "${BRANCH}" ] ; then

@@ -2,8 +2,8 @@
 
 set -e
 
-FARNSWORTH=/opt/apps/farnsworth
-UWSGI_INI=/opt/apps/uwsgi.ini
+FARNSWORTH="/opt/apps/farnsworth"
+UWSGI_PID="/opt/apps/uwsgi.pid"
 
 cd "${FARNSWORTH}"
 
@@ -16,3 +16,4 @@ echo "Creating database tables"
 ./manage.py migrate --noinput > /dev/null
 
 chown -R www-data:www-data .
+touch "${UWSGI_PID}"
