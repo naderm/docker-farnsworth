@@ -15,5 +15,7 @@ mkdir -p pg_data
 chcon -Rt svirt_sandbox_file_t pg_data
 fig up -d db
 sleep 5
-fig exec db pg_restore -C -h localhost -U postgres -d docker "$1"
+#fig exec db pg_restore -C -h localhost -U postgres -d docker "$1"
+DOCKER_DB_NAME="$(fig ps | grep db | awk '{ print $1 }')"
+docker exec "${DOCKER_DB_NAME}" pg_restore -C -U postgres -d docker "$1"
 fig stop db

@@ -4,4 +4,6 @@ set -e
 
 cd "$(dirname $(readlink -f "$0"))/../"
 
-fig exec web /usr/local/bin/update
+#fig exec web /usr/local/bin/update
+DOCKER_WEB_NAME="$(fig ps | grep web | awk '{ print $1 }')"
+docker exec "${DOCKER_WEB_NAME}" /usr/local/bin/update
