@@ -16,4 +16,6 @@ echo "Creating database tables"
 ./manage.py migrate --noinput > /dev/null
 
 chown -R www-data:www-data .
+
+echo "Restarting uWSGI"
 touch "${UWSGI_PID}"
