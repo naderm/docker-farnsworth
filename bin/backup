@@ -11,5 +11,5 @@ fi
 cd "$(dirname $(readlink -f "$0"))/../"
 
 #fig exec db pg_dump -Fc -h localhost -U postgres docker > "$1"
-DOCKER_DB_NAME="$(fig ps | awk 'NR>2' | awk '{ if (match($1, /db/)) { print $1 }}')"
+DOCKER_DB_NAME="$(fig ps | awk 'NR>2 { if (match($1, /db/)) { print $1 }}')"
 docker exec "${DOCKER_DB_NAME}" pg_dump -Fc -U postgres docker > "$1"
