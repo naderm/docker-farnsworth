@@ -14,23 +14,35 @@ Follow these instructions to install Docker and Fig on your system of choice:
 Bring up your Farnsworth deployment using fig:
 
 ```
-$ cp fig.yml.example fig.yml
-$ $EDITOR fig.yml
-$ cp settings/house_settings.py.example settings/house_settings.py
-$ $EDITOR settings/house_settings.py
-$ fig up -d
-# Add initial content to the site
-$ fig run web /opt/apps/farnsworth/farnsworth/pre_fill.py --managers --requests --workshift
+# cp fig.yml.example fig.yml
+# $EDITOR fig.yml
+# cp settings/house_settings.py.example settings/house_settings.py
+# $EDITOR settings/house_settings.py
+# fig up -d
+```
+
+You can then add some initial content to the site via:
+
+```
+# fig run web /opt/apps/farnsworth/farnsworth/pre_fill.py --managers --requests --workshift
 ```
 
 (This may take a while as it needs to build the docker images the first time)
 
-# Backups
+## Updates
+
+You can pull updates from the official Farnsworth repository without restarting your container by running the following command:
+
+```
+# bin/update
+```
+
+## Backups
 
 Backups require the postgresql package, run them with the following command:
 
 ```
-$ pg_dump -Fc -h localhost -U postgres docker > "backup-<house>-$(date +%F).dump"
+# bin/backup "backup-<house>-$(date +%F).dump"
 ```
 
 You will need to enter the password used to create the database instance in fig.yml
@@ -38,16 +50,7 @@ You will need to enter the password used to create the database instance in fig.
 Backups can be restored with the following command:
 
 ```
-# Clear all previous settings and bring up the database
-$ fig stop
-$ fig rm --force db
-$ rm -rf pg_data
-$ mkdir pg_data
-$ sudo chcon -Rt svirt_sandbox_file_t pg_data
-$ fig up -d db
-$ pg_restore -C -h localhost -U postgres -d docker "backup-<house>-<date>.dump"
-# Bring up the rest of the site
-$ fig up -d
+# bin/restore "backup-<house>-<date>.dump"
 ```
 
 # HTTPS
@@ -74,5 +77,5 @@ Then create `keys/public.crt` and `keys/private.key` for your public and private
 If your host machine is running CentOS or RHEL, or is otherwise running SELinux you will need to give docker permission to read the folders containing the settings and optionally the ssl keys.
 
 ```
-$ sudo chcon -Rt svirt_sandbox_file_t settings keys pg_data
+# chcon -Rt svirt_sandbox_file_t settings keys pg_data
 ```
