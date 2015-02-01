@@ -13,7 +13,7 @@ cat > "${UWSGI_INI}" <<EOF
 [uwsgi]
 master = true
 #enable-threads = true
-#processes = 4
+processes = 8
 shared-socket = :80
 uid = www-data
 gid = www-data
