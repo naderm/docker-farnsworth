@@ -11,9 +11,7 @@ RUN yum -y update && \
 # Clone Farnsworth
 RUN mkdir -p /opt/apps
 RUN git clone https://github.com/knagra/farnsworth.git /opt/apps/farnsworth
-RUN yum install -y pandoc && \
-    pip install -r /opt/apps/farnsworth/requirements.txt && \
-    yum remove -y pandoc
+RUN pip install -r /opt/apps/farnsworth/requirements.txt
 
 EXPOSE 80 443
 CMD ["/usr/local/bin/run"]
