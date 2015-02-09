@@ -11,7 +11,7 @@ cd "${FARNSWORTH}"
 git pull
 
 echo "Collecting static files"
-./manage.py collectstatic --noinput > /dev/null
+./manage.py collectstatic --noinput --clear > /dev/null
 echo "Creating database tables"
 ./manage.py migrate --noinput > /dev/null
 
