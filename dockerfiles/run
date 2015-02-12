@@ -59,7 +59,7 @@ git pull
 
 # Initialize the database, collect files, etc ...
 echo "Collecting static files"
-./manage.py collectstatic --noinput --clear > /dev/null
+./manage.py collectstatic --noinput > /dev/null
 echo "Creating database tables"
 ./manage.py migrate --noinput > /dev/null
 echo "Updating search index"
