@@ -16,6 +16,6 @@ chcon -Rt svirt_sandbox_file_t pg_data
 fig up -d db
 sleep 5
 #fig exec db pg_restore -C -h localhost -U postgres -d postgres "$1"
-DOCKER_DB_NAME="$(fig ps | awk 'NR>2 { if (match($1, /db/)) { print $1 }}')"
+DOCKER_DB_NAME="$(fig ps -q db)"
 docker exec "${DOCKER_DB_NAME}" pg_restore -C -U postgres -d postgres "$1"
 fig stop db

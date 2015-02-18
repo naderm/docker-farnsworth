@@ -5,5 +5,5 @@ set -e
 cd "$(dirname $(readlink -f "$0"))/../"
 
 #fig exec web /usr/local/bin/update
-DOCKER_WEB_NAME="$(fig ps | awk 'NR>2 { if (match($1, /web/)) { print $1 }}')"
+DOCKER_WEB_NAME="$(fig ps -q web)"
 docker exec "${DOCKER_WEB_NAME}" /usr/local/bin/update
