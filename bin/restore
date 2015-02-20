@@ -17,5 +17,5 @@ fig up -d db
 sleep 5
 #fig exec db pg_restore -C -h localhost -U postgres -d postgres "$1"
 DOCKER_DB_NAME="$(fig ps -q db)"
-docker exec "${DOCKER_DB_NAME}" pg_restore -C -U postgres -d postgres "$1"
+docker exec -i "${DOCKER_DB_NAME}" pg_restore -C -U postgres -d postgres < "$1"
 fig stop db
