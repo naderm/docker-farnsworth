@@ -9,6 +9,7 @@ SUPERVISORD_CONF="/opt/apps/supervisord.conf"
 FARNSWORTH_CRON="/etc/cron.d/farnsworth.cron"
 
 # Generate the uWSGI configuration
+echo " *** creating ${UWSGI_INI} ***"
 cat > "${UWSGI_INI}" <<EOF
 [uwsgi]
 master = true
@@ -28,6 +29,7 @@ touch-reload = ${UWSGI_PID}
 EOF
 
 if [ "xyes" = "x${ENABLE_SSL}" ] ; then
+    echo "    *** enabling ssl ***"
     cat >> "${UWSGI_INI}" <<EOF
 shared-socket = :443
 https = =1,${KEYS_FOLDER}/public.crt,${KEYS_FOLDER}/private.key
@@ -38,11 +40,11 @@ EOF
 fi
 
 # Generate the cron file
+echo " *** creating ${FARNSWORTH_CRON} ***"
 cat > "${FARNSWORTH_CRON}" <<EOF
-POSTGRESQL_PASS="${POSTGRESQL_PASS}"
 DB_1_PORT_5432_TCP_ADDR="${DB_1_PORT_5432_TCP_ADDR}"
 DB_1_PORT_5432_TCP_PORT="${DB_1_PORT_5432_TCP_PORT}"
-*/5 * * * * root ${FARNSWORTH}/manage.py runcrons
+*/5 * * * * root "${FARNSWORTH}/manage.py" runcrons
 EOF
 
 chmod 644 "${FARNSWORTH_CRON}"
@@ -51,22 +53,25 @@ cd "${FARNSWORTH}"
 
 # Check out a house-specific branch of the code if need be
 if [ -n "${BRANCH}" ] ; then
+    echo " *** checking out alternate branch ${BRANCH} ***"
     git checkout -b "${BRANCH}" "origin/${BRANCH}"
 fi
 
 # Update the repo
+echo " *** updating git repo ***"
 git pull
 
 # Initialize the database, collect files, etc ...
-echo "Collecting static files"
+echo " *** collecting static files ***"
 ./manage.py collectstatic --noinput > /dev/null
-echo "Creating database tables"
+echo " *** creating database tables ***"
 ./manage.py migrate --noinput > /dev/null
-echo "Updating search index"
+echo " *** updating search index ***"
 ./manage.py update_index > /dev/null
 
+echo " *** updating file permissions ***"
 chown -R www-data:www-data .
 
 # Run the uWSGI + cron daemons
-echo "Running uWSGI server"
-supervisord -n -c ${SUPERVISORD_CONF}
+echo " *** running uWSGI server ***"
+supervisord -n -c "${SUPERVISORD_CONF}"
