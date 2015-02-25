@@ -1,17 +1,15 @@
+# Taken from https://github.com/lukecyca/travis-docker-example/blob/master/.travis.yml
 install:
-  - curl -sSL https://get.docker.com/ | sudo sh
   - pip install fig
-  - docker build .
-  - docker pull dockerfile/elasticsearch
-  - docker pull postgres:9.3
-
-before_script:
-  - cp fig.yml.example fig.yml
-  - cp settings/house_settings.py.example settings/house_settings.py
-  - echo "SECRET_KEY = 'TESTING SECRET KEY'" >> farnsworth/house_settings.py
+  - sudo sh -c "wget -qO- https://get.docker.io/gpg | apt-key add -"
+  - sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
+  - sudo apt-get update
+  - sudo mkdir -p /var/lib/docker
+  - echo exit 101 | sudo tee /usr/sbin/policy-rc.d
+  - sudo chmod +x /usr/sbin/policy-rc.d
+  - sudo apt-get install -y slirp lxc lxc-docker aufs-tools cgroup-lite
+  - curl -sLo linux https://github.com/jpetazzo/sekexe/raw/master/uml
+  - chmod +x linux
 
 script:
-  - sudo fig up -d
-  - sleep 30
-  - sudo fig logs
-  - curl http://localhost/
+  - ./linux quiet mem=2G rootfstype=hostfs rw eth0=slirp,,/usr/bin/slirp-fullbolt init=$(pwd)/.travis-script.sh WORKDIR=$(pwd) HOME=$HOME
