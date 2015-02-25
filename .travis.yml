@@ -1,0 +1,17 @@
+install:
+  - curl -sSL https://get.docker.com/ | sudo sh
+  - pip install fig
+  - docker build .
+  - docker pull dockerfile/elasticsearch
+  - docker pull postgres:9.3
+
+before_script:
+  - cp fig.yml.example fig.yml
+  - cp settings/house_settings.py.example settings/house_settings.py
+  - echo "SECRET_KEY = 'TESTING SECRET KEY'" >> farnsworth/house_settings.py
+
+script:
+  - sudo fig up -d
+  - sleep 30
+  - sudo fig logs
+  - curl http://localhost/
