@@ -7,6 +7,7 @@ UWSGI_INI="/opt/apps/uwsgi.ini"
 UWSGI_PID="/opt/apps/uwsgi.pid"
 SUPERVISORD_CONF="/opt/apps/supervisord.conf"
 FARNSWORTH_CRON="/etc/cron.d/farnsworth.cron"
+WORKERS=8
 
 # Generate the uWSGI configuration
 echo " *** creating ${UWSGI_INI} ***"
@@ -14,7 +15,7 @@ cat > "${UWSGI_INI}" <<EOF
 [uwsgi]
 master = true
 #enable-threads = true
-processes = 8
+processes = ${WORKERS}
 shared-socket = :80
 uid = www-data
 gid = www-data
@@ -67,7 +68,7 @@ echo " *** collecting static files ***"
 echo " *** creating database tables ***"
 ./manage.py migrate --noinput > /dev/null
 echo " *** updating search index ***"
-./manage.py update_index > /dev/null
+./manage.py update_index --workers=${WORKERS} > /dev/null
 
 echo " *** updating file permissions ***"
 chown -R www-data:www-data .
