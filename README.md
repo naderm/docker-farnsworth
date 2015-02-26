@@ -2,12 +2,12 @@
 
 Docker repository for deploying [Farnsworth](https://github.com/knagra/farnsworth)
 
-# Install Docker and Fig
+# Install Docker and Docker Compose
 
-Follow these instructions to install Docker and Fig on your system of choice:
+Follow these instructions to install Docker and Docker Compose on your system of choice:
 
 - [Docker](http://docs.docker.com/installation/)
-- [Fig](http://www.fig.sh/install.html)
+- [Docker Compose](https://github.com/docker/compose/releases)
 
 Note that most commands below require access to root in order to communicate
 with the Docker daemon. `sudo` has been added in front of commands whever
@@ -15,20 +15,20 @@ appropriate.
 
 # Deploy
 
-Bring up your Farnsworth deployment using fig:
+Bring up your Farnsworth deployment using docker-compose:
 
 ```
-$ cp fig.yml.example fig.yml
-$ $EDITOR fig.yml
+$ cp docker-compose.yml.example docker-compose.yml
+$ $EDITOR docker-compose.yml
 $ cp settings/house_settings.py.example settings/house_settings.py
 $ $EDITOR settings/house_settings.py
-$ sudo fig up -d
+$ sudo docker-compose up -d
 ```
 
 You can then add some initial content to the site via:
 
 ```
-$ sudo fig run web /opt/apps/farnsworth/farnsworth/pre_fill.py --managers --requests --workshift
+$ sudo docker-compose run web /opt/apps/farnsworth/farnsworth/pre_fill.py --managers --requests --workshift
 ```
 
 (This may take a while as it needs to build the docker images the first time)
@@ -58,7 +58,7 @@ $ sudo bin/restore "backup-<house>-<date>.dump"
 
 # HTTPS
 
-To enable SSL, modify your fig.yml file to enable SSL and mount a volume
+To enable SSL, modify your docker-compose.yml file to enable SSL and mount a volume
 containing the SSL keys:
 
 ```

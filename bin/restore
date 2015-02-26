@@ -10,12 +10,12 @@ fi
 
 cd "$(dirname $(readlink -f "$0"))/../"
 
-fig stop
+docker-compose stop
 mkdir -p pg_data
 chcon -Rt svirt_sandbox_file_t pg_data
-fig up -d db
+docker-compose up -d db
 sleep 5
-#fig exec db pg_restore -C -h localhost -U postgres -d postgres "$1"
-DOCKER_DB_NAME="$(fig ps -q db)"
+#docker-compose exec db pg_restore -C -h localhost -U postgres -d postgres "$1"
+DOCKER_DB_NAME="$(docker-compose ps -q db)"
 docker exec -i "${DOCKER_DB_NAME}" pg_restore -C -U postgres -d postgres < "$1"
-fig stop db
+docker-compose stop db

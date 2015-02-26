@@ -2,6 +2,7 @@ keys/*.crt
 keys/*.key
 keys/*.pem
 fig.yml
+docker-compose.yml
 settings/house_settings.py
 *~
 pg_data/*

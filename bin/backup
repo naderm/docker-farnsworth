@@ -10,6 +10,6 @@ fi
 
 cd "$(dirname $(readlink -f "$0"))/../"
 
-#fig exec db pg_dump -Fc -h localhost -U postgres postgres > "$1"
-DOCKER_DB_NAME="$(fig ps -q db)"
+#docker-compose exec db pg_dump -Fc -h localhost -U postgres postgres > "$1"
+DOCKER_DB_NAME="$(docker-compose ps -q db)"
 docker exec "${DOCKER_DB_NAME}" pg_dump -Fc -U postgres postgres > "$1"
