@@ -1,14 +1,17 @@
 elasticsearch:
+  restart: on-failure:10
   image: dockerfile/elasticsearch
   expose:
     - "9200"
 db:
+  restart: on-failure:10
   image: postgres:9.3
   expose:
     - "5432"
   volumes:
     - pg_data/:/var/lib/postgresql/data
 web:
+  restart: on-failure:10
   build: .
   ports:
     - "80:80"

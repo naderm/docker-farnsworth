@@ -10,7 +10,10 @@ RUN yum -y update && \
 
 # Clone Farnsworth
 RUN mkdir -p /opt/apps
-RUN git clone https://github.com/knagra/farnsworth.git /opt/apps/farnsworth
+RUN git clone https://github.com/knagra/farnsworth.git /opt/apps/farnsworth && \
+    cd /opt/apps/farnsworth && \
+    rm farnsworth/local_settings.py && \
+    git update-index --assume-unchanged farnsworth/local_settings.py
 RUN pip install -r /opt/apps/farnsworth/requirements.txt
 
 EXPOSE 80 443
