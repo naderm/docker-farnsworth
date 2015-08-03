@@ -7,6 +7,7 @@ RUN yum -y update && \
     yum install -y postgresql-devel python-devel python-pip gcc git libffi-devel curl openssl openssl-devel supervisor mailcap cronie && \
     pip install uwsgi supervisor-stdout && \
     yum clean all
+RUN pip install -U pip
 
 # Clone Farnsworth
 RUN mkdir -p /opt/apps
